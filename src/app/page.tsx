@@ -1,13 +1,13 @@
 import { Form } from '@/components/Form'
 import { GradationLabels } from '@/interfaces/labels.interface'
-import axios from 'axios'
 import { GroupBase, OptionsOrGroups } from 'react-select'
 
 async function getLabels() {
 	try {
-		const labels: GradationLabels = await axios
-			.get('https://tools.qa.ale.ai/api/tools/candidates/levels')
-			.then(res => res.data)
+		const labels: GradationLabels = await fetch(
+			'https://tools.qa.ale.ai/api/tools/candidates/levels',
+			{ next: { revalidate: 3600 } }
+		).then(res => res.json())
 
 		return labels
 	} catch (error) {
